@@ -1054,6 +1054,22 @@ const AP_Param::GroupInfo AP_OSD_Screen::var_info[] = {
     // @Description: Vertical position on screen
     // @Range: 0 21
     AP_SUBGROUPINFO(alt_c, "ALT_C", 63, AP_OSD_Screen, AP_OSD_Setting),
+
+    
+    // @Param: C_VSPEED_EN
+    // @DisplayName: C_VSPEED_EN
+    // @Description: Enables display of altitude AGL
+    // @Values: 0:Disabled,1:Enabled
+
+    // @Param: C_VSPEED_X
+    // @DisplayName: C_VSPEED_X
+    // @Description: Horizontal position on screen
+    // @Range: 0 59
+
+    // @Param: C_VSPEED_Y
+    // @DisplayName: C_VSPEED_Y
+    // @Description: Vertical position on screen
+    // @Range: 0 21
     //AP_SUBGROUPINFO(c_vspeed, "C_VSPEED", 64, AP_OSD_Screen, AP_OSD_Setting),
 
     AP_GROUPEND
@@ -1204,7 +1220,7 @@ uint8_t AP_OSD_AbstractScreen::symbols_lookup_table[AP_OSD_NUM_SYMBOLS];
 #define SYM_SIDEBAR_J 90
 
 #define SYM_ALT_C_M   91
-#define SYM_C_VSPEED  92
+//#define SYM_C_VSPEED  92
 
 #define SYMBOL(n) AP_OSD_AbstractScreen::symbols_lookup_table[n]
 
@@ -1239,7 +1255,7 @@ char AP_OSD_AbstractScreen::u_icon(enum unit_type unit)
         SYM_KM,       //DISTANCE_LONG
         SYM_DEGREES_C, //TEMPERATURE
         SYM_ALT_C_M,
-        SYM_C_VSPEED,
+        //SYM_C_VSPEED,
     };
     static const uint8_t icons_imperial[UNIT_TYPE_LAST] {
         SYM_ALT_FT,   //ALTITUDE
@@ -1249,7 +1265,7 @@ char AP_OSD_AbstractScreen::u_icon(enum unit_type unit)
         SYM_MI,       //DISTANCE_LONG
         SYM_DEGREES_F, //TEMPERATURE
         SYM_ALT_C_M,
-        SYM_C_VSPEED,
+        //SYM_C_VSPEED,
     };
     static const uint8_t icons_SI[UNIT_TYPE_LAST] {
         SYM_ALT_M,    //ALTITUDE
@@ -1259,7 +1275,7 @@ char AP_OSD_AbstractScreen::u_icon(enum unit_type unit)
         SYM_KM,       //DISTANCE_LONG
         SYM_DEGREES_C, //TEMPERATURE
         SYM_ALT_C_M,
-        SYM_C_VSPEED,
+        //SYM_C_VSPEED,
     };
     static const uint8_t icons_aviation[UNIT_TYPE_LAST] {
         SYM_ALT_FT,   //ALTITUDE Ft
@@ -1269,7 +1285,7 @@ char AP_OSD_AbstractScreen::u_icon(enum unit_type unit)
         SYM_NM,       //DISTANCE_LONG Nm
         SYM_DEGREES_C, //TEMPERATURE
         SYM_ALT_C_M,
-        SYM_C_VSPEED,
+        //SYM_C_VSPEED,
     };
     static const uint8_t* icons[AP_OSD::UNITS_LAST] = {
         icons_metric,
@@ -1293,7 +1309,7 @@ float AP_OSD_AbstractScreen::u_scale(enum unit_type unit, float value)
         1.0/1000,  //DISTANCE_LONG km
         1.0,       //TEMPERATURE C
         1.0,       //ALTITUDE CARGO m
-        1.0,       //C VSPEED m/s
+        //1.0,       //C VSPEED m/s
     };
     static const float scale_imperial[UNIT_TYPE_LAST] = {
         3.28084,     //ALTITUDE ft
@@ -1303,7 +1319,7 @@ float AP_OSD_AbstractScreen::u_scale(enum unit_type unit, float value)
         1.0/1609.34, //DISTANCE_LONG miles
         1.8,         //TEMPERATURE F
         3.28084,     //ALTITUDE CARGO ft
-        3.28084,      //C VSPEED ft/min
+        //3.28084,      //C VSPEED ft/min
     };
     static const float offset_imperial[UNIT_TYPE_LAST] = {
         0.0,          //ALTITUDE
@@ -1313,7 +1329,7 @@ float AP_OSD_AbstractScreen::u_scale(enum unit_type unit, float value)
         0.0,          //DISTANCE_LONG
         32.0,         //TEMPERATURE F
         0.0,          //ALTITUDE CARGO
-        0.0,          //C VSPEED
+        //0.0,          //C VSPEED
     };
     static const float scale_SI[UNIT_TYPE_LAST] = {
         1.0,       //ALTITUDE m
@@ -1323,7 +1339,7 @@ float AP_OSD_AbstractScreen::u_scale(enum unit_type unit, float value)
         1.0/1000,  //DISTANCE_LONG km
         1.0,       //TEMPERATURE C
         1.0,       //ALTITUDE CARGO m
-        1.0,       //C VSPEED m/s
+        //1.0,       //C VSPEED m/s
     };
     static const float scale_aviation[UNIT_TYPE_LAST] = {
         3.28084,   //ALTITUDE Ft
@@ -1333,7 +1349,7 @@ float AP_OSD_AbstractScreen::u_scale(enum unit_type unit, float value)
         0.000539957,  //DISTANCE_LONG Nm
         1.0,       //TEMPERATURE C
         3.28084,   //ALTITUDE CARGO Ft
-        196.85,    //C VSPEED ft/min
+        //196.85,    //C VSPEED ft/min
     };
     static const float *scale[AP_OSD::UNITS_LAST] = {
         scale_metric,
@@ -1374,6 +1390,7 @@ void AP_OSD_Screen::draw_altitude(uint8_t x, uint8_t y)
 
 void AP_OSD_Screen::draw_alt_c(uint8_t x, uint8_t y)
 {
+    /*
     float alt;
     float alt_cargo;
     AP_AHRS &ahrs = AP::ahrs();
@@ -1381,6 +1398,19 @@ void AP_OSD_Screen::draw_alt_c(uint8_t x, uint8_t y)
     ahrs.get_relative_position_D_home(alt);
     alt_cargo = alt - 15;
     backend->write(x, y, false, "%4d%c", (int)u_scale(ALTITUDE, alt_cargo), u_icon(ALTITUDE));
+    */
+
+    AP_AHRS &ahrs = AP::ahrs();
+    uint16_t roll = abs(ahrs.roll_sensor) / 100;
+    char r;
+    if (ahrs.roll_sensor > 50) {
+        r = SYMBOL(SYM_ROLLR);
+    } else if (ahrs.roll_sensor < -50) {
+        r = SYMBOL(SYM_ROLLL);
+    } else {
+        r = SYMBOL(SYM_ROLL0);
+    }
+    backend->write(x, y, false, "%c%3d%c", r, roll, SYMBOL(SYM_DEGR));
 }
 
 void AP_OSD_Screen::draw_bat_volt(uint8_t instance, VoltageType type, uint8_t x, uint8_t y)
@@ -1933,42 +1963,19 @@ void AP_OSD_Screen::draw_vspeed(uint8_t x, uint8_t y)
 /*
 void AP_OSD_Screen::draw_c_vspeed(uint8_t x, uint8_t y)
 {
-
-    //float vspd = -7.3f;  // фиксированное значение спуска груза 7.3 м/с вниз
-    //float vs_scaled;
-    //char sym;
-
-    //if (vspd > 3.0f) {
-    //    sym = SYMBOL(SYM_UP_UP);
-    //} else if (vspd >= 0.0f) {
-    //    sym = SYMBOL(SYM_UP);
-    //} else if (vspd >= -3.0f) {
-    //    sym = SYMBOL(SYM_DOWN);
-    //} else {
-    //    sym = SYMBOL(SYM_DOWN_DOWN);
-    //}
-
-    //vs_scaled = u_scale(VSPEED, fabsf(vspd));
-
-    //backend->write(x, y, false, "%c%.1f%c", sym, (float)vs_scaled, u_icon(VSPEED));
-
-    
-
-    //int vspd = 42;
-    //backend->write(x, y, false, "%4d%c", 1, u_icon(VSPEED));
-    //backend->write(x, y, false, "%c", SYMBOL(SYM_WSPD));
-
-
-    float alt;
-    float alt_cargo;
     AP_AHRS &ahrs = AP::ahrs();
-    WITH_SEMAPHORE(ahrs.get_semaphore());
-    ahrs.get_relative_position_D_home(alt);
-    alt_cargo = alt - 15;
-    backend->write(x, y, false, "%4d%c", (int)u_scale(VSPEED, alt_cargo), u_icon(VSPEED));
+    uint16_t roll = abs(ahrs.roll_sensor) / 100;
+    char r;
+    if (ahrs.roll_sensor > 50) {
+        r = SYMBOL(SYM_ROLLR);
+    } else if (ahrs.roll_sensor < -50) {
+        r = SYMBOL(SYM_ROLLL);
+    } else {
+        r = SYMBOL(SYM_ROLL0);
+    }
+    backend->write(x, y, false, "%c%3d%c", r, roll, SYMBOL(SYM_DEGR));
 }
 */
-
 #if HAL_WITH_ESC_TELEM
 void AP_OSD_Screen::draw_esc_temp(uint8_t x, uint8_t y)
 {

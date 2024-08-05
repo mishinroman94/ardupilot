@@ -102,7 +102,7 @@ static const struct AP_Param::defaults_table_struct defaults_table[] = {
     { "OSD_VSPEED_X",        1.0 },
     { "OSD_VSPEED_Y",        1.0 },
 
-    //OSD_VSPEED_CARGO
+    //OSD_C_VSPEED
     { "OSD_C_VSPEED_EN",       1.0 },
     { "OSD_C_VSPEED_X",        1.0 },
     { "OSD_C_VSPEED_Y",        1.0 },
