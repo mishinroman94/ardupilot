@@ -146,6 +146,9 @@ private:
     static const uint8_t SYM_RNGFD = 0x7F;
     static const uint8_t SYM_LQ = 0xF8;
 
+    static const uint8_t SYM_ALT_C_M = 0x0C;
+    static const uint8_t SYM_C_VSPEED = 0x5E;
+
     static constexpr uint8_t symbols[AP_OSD_NUM_SYMBOLS] {
         SYM_M,
         SYM_KM,
@@ -226,6 +229,8 @@ private:
         SYM_FENCE_DISABLED,
         SYM_RNGFD,
         SYM_LQ,
+        SYM_ALT_C_M,
+        SYM_C_VSPEED,
     };
 
     bool _blink_on;

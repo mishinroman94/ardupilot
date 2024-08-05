@@ -48,7 +48,7 @@ class AP_MSP;
 #define PARAM_INDEX(key, idx, group) (uint32_t(uint32_t(key) << 23 | uint32_t(idx) << 18 | uint32_t(group)))
 #define PARAM_TOKEN_INDEX(token) PARAM_INDEX(AP_Param::get_persistent_key(token.key), token.idx, token.group_element)
 
-#define AP_OSD_NUM_SYMBOLS 91
+#define AP_OSD_NUM_SYMBOLS 93
 #define OSD_MAX_INSTANCES 2
 /*
   class to hold one setting
@@ -104,7 +104,9 @@ protected:
         DISTANCE=3,
         DISTANCE_LONG=4,
         TEMPERATURE=5,
-        UNIT_TYPE_LAST=6,
+        ALT_C_M=6,
+        C_VSPEED=7,
+        UNIT_TYPE_LAST=8,
     };
 
     char u_icon(enum unit_type unit);
@@ -165,6 +167,7 @@ private:
     };
 
     AP_OSD_Setting altitude{true, 23, 8};
+    AP_OSD_Setting alt_c{false, 2, 8};
     AP_OSD_Setting bat_volt{true, 24, 1};
     AP_OSD_Setting rssi{true, 1, 1};
     AP_OSD_Setting link_quality{false,1,1};
@@ -174,7 +177,7 @@ private:
     AP_OSD_Setting current{true, 25, 2};
     AP_OSD_Setting batused{true, 23, 3};
     AP_OSD_Setting sats{true, 1, 3};
-    AP_OSD_Setting fltmode{true, 2, 8};
+    AP_OSD_Setting fltmode{true, 2, 7};
     AP_OSD_Setting message{true, 2, 6};
     AP_OSD_Setting gspeed{true, 2, 14};
     AP_OSD_Setting horizon{true, 14, 8};
@@ -187,6 +190,7 @@ private:
     AP_OSD_Setting aspd1;
     AP_OSD_Setting aspd2;
     AP_OSD_Setting vspeed{true, 24, 9};
+    //AP_OSD_Setting c_vspeed{false, 2, 9};
 #if AP_RPM_ENABLED
     AP_OSD_Setting rrpm{false, 2, 2};
 #endif
@@ -242,6 +246,7 @@ private:
 #endif
 
     void draw_altitude(uint8_t x, uint8_t y);
+    void draw_alt_c(uint8_t x, uint8_t y);
     void draw_bat_volt(uint8_t instance,VoltageType  type,uint8_t x, uint8_t y);
     void draw_bat_volt(uint8_t x, uint8_t y);
     void draw_avgcellvolt(uint8_t x, uint8_t y);
@@ -273,6 +278,7 @@ private:
     void draw_aspd1(uint8_t x, uint8_t y);
     void draw_aspd2(uint8_t x, uint8_t y);
     void draw_vspeed(uint8_t x, uint8_t y);
+    //void draw_c_vspeed(uint8_t x, uint8_t y);
 #if HAL_PLUSCODE_ENABLE
     void draw_pluscode(uint8_t x, uint8_t y);
 #endif

@@ -112,7 +112,7 @@ void AP_Winch_Daiwa::read_data_from_winch()
     if (uart == nullptr) {
         return;
     }
-
+    
     // read any available characters from serial port and send to GCS
     int16_t nbytes = uart->available();
     while (nbytes-- > 0) {

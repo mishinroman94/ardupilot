@@ -198,6 +198,9 @@ protected:
     static const uint8_t SYM_SIDEBAR_I = 0x11;
     static const uint8_t SYM_SIDEBAR_J = 0x12;
 
+    static const uint8_t SYM_ALT_C_M = 0xB1;
+    static const uint8_t SYM_C_VSPEED = 0xE4;
+
     static constexpr uint8_t symbols[AP_OSD_NUM_SYMBOLS] {
         SYM_M,
         SYM_KM,
@@ -290,5 +293,7 @@ protected:
         SYM_SIDEBAR_H,
         SYM_SIDEBAR_I,
         SYM_SIDEBAR_J,
+        SYM_ALT_C_M,
+        SYM_C_VSPEED,
     };
 };

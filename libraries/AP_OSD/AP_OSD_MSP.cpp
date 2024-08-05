@@ -66,6 +66,12 @@ static const struct AP_Param::defaults_table_struct defaults_table[] = {
     { "OSD_ALTITUDE_X",        1.0 },
     { "OSD_ALTITUDE_Y",        1.0 },
 
+
+    //OSD_ALT_C
+    { "OSD_ALT_C_EN",       1.0 },
+    { "OSD_ALT_C_X",        1.0 },
+    { "OSD_ALT_C_Y",        1.0 },
+
     //OSD_GPS_LON
     { "OSD_GPSLONG_EN",       1.0 },
     { "OSD_GPSLONG_X",        1.0 },
@@ -95,6 +101,11 @@ static const struct AP_Param::defaults_table_struct defaults_table[] = {
     { "OSD_VSPEED_EN",       1.0 },
     { "OSD_VSPEED_X",        1.0 },
     { "OSD_VSPEED_Y",        1.0 },
+
+    //OSD_VSPEED_CARGO
+    { "OSD_C_VSPEED_EN",       1.0 },
+    { "OSD_C_VSPEED_X",        1.0 },
+    { "OSD_C_VSPEED_Y",        1.0 },
 
 #ifdef HAVE_AP_BLHELI_SUPPORT
     //OSD_ESC_TMP
