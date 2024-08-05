@@ -1254,8 +1254,6 @@ char AP_OSD_AbstractScreen::u_icon(enum unit_type unit)
         SYM_M,        //DISTANCE
         SYM_KM,       //DISTANCE_LONG
         SYM_DEGREES_C, //TEMPERATURE
-        SYM_ALT_C_M,
-        //SYM_C_VSPEED,
     };
     static const uint8_t icons_imperial[UNIT_TYPE_LAST] {
         SYM_ALT_FT,   //ALTITUDE
@@ -1264,8 +1262,6 @@ char AP_OSD_AbstractScreen::u_icon(enum unit_type unit)
         SYM_FT,       //DISTANCE
         SYM_MI,       //DISTANCE_LONG
         SYM_DEGREES_F, //TEMPERATURE
-        SYM_ALT_C_M,
-        //SYM_C_VSPEED,
     };
     static const uint8_t icons_SI[UNIT_TYPE_LAST] {
         SYM_ALT_M,    //ALTITUDE
@@ -1274,8 +1270,6 @@ char AP_OSD_AbstractScreen::u_icon(enum unit_type unit)
         SYM_M,        //DISTANCE
         SYM_KM,       //DISTANCE_LONG
         SYM_DEGREES_C, //TEMPERATURE
-        SYM_ALT_C_M,
-        //SYM_C_VSPEED,
     };
     static const uint8_t icons_aviation[UNIT_TYPE_LAST] {
         SYM_ALT_FT,   //ALTITUDE Ft
@@ -1284,8 +1278,6 @@ char AP_OSD_AbstractScreen::u_icon(enum unit_type unit)
         SYM_FT,       //DISTANCE
         SYM_NM,       //DISTANCE_LONG Nm
         SYM_DEGREES_C, //TEMPERATURE
-        SYM_ALT_C_M,
-        //SYM_C_VSPEED,
     };
     static const uint8_t* icons[AP_OSD::UNITS_LAST] = {
         icons_metric,
@@ -1308,8 +1300,6 @@ float AP_OSD_AbstractScreen::u_scale(enum unit_type unit, float value)
         1.0,       //DISTANCE m
         1.0/1000,  //DISTANCE_LONG km
         1.0,       //TEMPERATURE C
-        1.0,       //ALTITUDE CARGO m
-        //1.0,       //C VSPEED m/s
     };
     static const float scale_imperial[UNIT_TYPE_LAST] = {
         3.28084,     //ALTITUDE ft
@@ -1318,8 +1308,6 @@ float AP_OSD_AbstractScreen::u_scale(enum unit_type unit, float value)
         3.28084,     //DISTANCE ft
         1.0/1609.34, //DISTANCE_LONG miles
         1.8,         //TEMPERATURE F
-        3.28084,     //ALTITUDE CARGO ft
-        //3.28084,      //C VSPEED ft/min
     };
     static const float offset_imperial[UNIT_TYPE_LAST] = {
         0.0,          //ALTITUDE
@@ -1328,8 +1316,6 @@ float AP_OSD_AbstractScreen::u_scale(enum unit_type unit, float value)
         0.0,          //DISTANCE
         0.0,          //DISTANCE_LONG
         32.0,         //TEMPERATURE F
-        0.0,          //ALTITUDE CARGO
-        //0.0,          //C VSPEED
     };
     static const float scale_SI[UNIT_TYPE_LAST] = {
         1.0,       //ALTITUDE m
@@ -1338,8 +1324,6 @@ float AP_OSD_AbstractScreen::u_scale(enum unit_type unit, float value)
         1.0,       //DISTANCE m
         1.0/1000,  //DISTANCE_LONG km
         1.0,       //TEMPERATURE C
-        1.0,       //ALTITUDE CARGO m
-        //1.0,       //C VSPEED m/s
     };
     static const float scale_aviation[UNIT_TYPE_LAST] = {
         3.28084,   //ALTITUDE Ft
@@ -1348,8 +1332,6 @@ float AP_OSD_AbstractScreen::u_scale(enum unit_type unit, float value)
         3.28084,   //DISTANCE ft
         0.000539957,  //DISTANCE_LONG Nm
         1.0,       //TEMPERATURE C
-        3.28084,   //ALTITUDE CARGO Ft
-        //196.85,    //C VSPEED ft/min
     };
     static const float *scale[AP_OSD::UNITS_LAST] = {
         scale_metric,
@@ -1390,27 +1372,16 @@ void AP_OSD_Screen::draw_altitude(uint8_t x, uint8_t y)
 
 void AP_OSD_Screen::draw_alt_c(uint8_t x, uint8_t y)
 {
-    /*
     float alt;
     float alt_cargo;
+    float winch_length;
     AP_AHRS &ahrs = AP::ahrs();
     WITH_SEMAPHORE(ahrs.get_semaphore());
     ahrs.get_relative_position_D_home(alt);
-    alt_cargo = alt - 15;
-    backend->write(x, y, false, "%4d%c", (int)u_scale(ALTITUDE, alt_cargo), u_icon(ALTITUDE));
-    */
 
-    AP_AHRS &ahrs = AP::ahrs();
-    uint16_t roll = abs(ahrs.roll_sensor) / 100;
-    char r;
-    if (ahrs.roll_sensor > 50) {
-        r = SYMBOL(SYM_ROLLR);
-    } else if (ahrs.roll_sensor < -50) {
-        r = SYMBOL(SYM_ROLLL);
-    } else {
-        r = SYMBOL(SYM_ROLL0);
-    }
-    backend->write(x, y, false, "%c%3d%c", r, roll, SYMBOL(SYM_DEGR));
+    winch_length = 17.3;
+    alt_cargo = alt - winch_length;
+    backend->write(x, y, false, "%4d%c", (int)u_scale(ALTITUDE, alt_cargo), u_icon(ALTITUDE));
 }
 
 void AP_OSD_Screen::draw_bat_volt(uint8_t instance, VoltageType type, uint8_t x, uint8_t y)

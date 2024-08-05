@@ -104,9 +104,7 @@ protected:
         DISTANCE=3,
         DISTANCE_LONG=4,
         TEMPERATURE=5,
-        ALT_C_M=6,
-        C_VSPEED=7,
-        UNIT_TYPE_LAST=8,
+        UNIT_TYPE_LAST=6,
     };
 
     char u_icon(enum unit_type unit);
