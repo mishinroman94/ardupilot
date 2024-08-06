@@ -188,7 +188,7 @@ private:
     AP_OSD_Setting aspd1;
     AP_OSD_Setting aspd2;
     AP_OSD_Setting vspeed{true, 24, 9};
-    //AP_OSD_Setting c_vspeed{false, 2, 9};
+    AP_OSD_Setting vspeed_c{false, 2, 9};
 #if AP_RPM_ENABLED
     AP_OSD_Setting rrpm{false, 2, 2};
 #endif
@@ -219,7 +219,7 @@ private:
     AP_OSD_Setting current2;
     AP_OSD_Setting clk;
     AP_OSD_Setting callsign;
-    AP_OSD_Setting vtx_power;
+    //AP_OSD_Setting vtx_power;
     AP_OSD_Setting hgt_abvterr{false, 23, 7};
     AP_OSD_Setting fence{false, 14, 9};
     AP_OSD_Setting rngf;
@@ -276,7 +276,7 @@ private:
     void draw_aspd1(uint8_t x, uint8_t y);
     void draw_aspd2(uint8_t x, uint8_t y);
     void draw_vspeed(uint8_t x, uint8_t y);
-    //void draw_c_vspeed(uint8_t x, uint8_t y);
+    void draw_vspeed_c(uint8_t x, uint8_t y);
 #if HAL_PLUSCODE_ENABLE
     void draw_pluscode(uint8_t x, uint8_t y);
 #endif
@@ -311,7 +311,7 @@ private:
     void draw_clk(uint8_t x, uint8_t y);
     void draw_callsign(uint8_t x, uint8_t y);
     void draw_current2(uint8_t x, uint8_t y);
-    void draw_vtx_power(uint8_t x, uint8_t y);
+    //void draw_vtx_power(uint8_t x, uint8_t y);
     void draw_hgt_abvterr(uint8_t x, uint8_t y);
 #if AP_FENCE_ENABLED
     void draw_fence(uint8_t x, uint8_t y);

@@ -920,7 +920,7 @@ const AP_Param::GroupInfo AP_OSD_Screen::var_info[] = {
     // @DisplayName: VTX_PWR_Y
     // @Description: Vertical position on screen
     // @Range: 0 21
-    AP_SUBGROUPINFO(vtx_power, "VTX_PWR", 55, AP_OSD_Screen, AP_OSD_Setting),
+    //AP_SUBGROUPINFO(vtx_power, "VTX_PWR", 55, AP_OSD_Screen, AP_OSD_Setting),
 #endif  // AP_VIDEOTX_ENABLED
 
 #if AP_TERRAIN_AVAILABLE
@@ -1056,21 +1056,21 @@ const AP_Param::GroupInfo AP_OSD_Screen::var_info[] = {
     AP_SUBGROUPINFO(alt_c, "ALT_C", 63, AP_OSD_Screen, AP_OSD_Setting),
 
     
-    // @Param: C_VSPEED_EN
-    // @DisplayName: C_VSPEED_EN
+    // @Param: VSPEED_C_EN
+    // @DisplayName: VSPEED_C_EN
     // @Description: Enables display of altitude AGL
     // @Values: 0:Disabled,1:Enabled
 
-    // @Param: C_VSPEED_X
-    // @DisplayName: C_VSPEED_X
+    // @Param: VSPEED_C_X
+    // @DisplayName: VSPEED_C_X
     // @Description: Horizontal position on screen
     // @Range: 0 59
 
-    // @Param: C_VSPEED_Y
-    // @DisplayName: C_VSPEED_Y
+    // @Param: VSPEED_C_Y
+    // @DisplayName: VSPEED_C_Y
     // @Description: Vertical position on screen
     // @Range: 0 21
-    //AP_SUBGROUPINFO(c_vspeed, "C_VSPEED", 64, AP_OSD_Screen, AP_OSD_Setting),
+    AP_SUBGROUPINFO(vspeed_c, "VSPEED_C", 55, AP_OSD_Screen, AP_OSD_Setting),
 
     AP_GROUPEND
 };
@@ -1220,7 +1220,7 @@ uint8_t AP_OSD_AbstractScreen::symbols_lookup_table[AP_OSD_NUM_SYMBOLS];
 #define SYM_SIDEBAR_J 90
 
 #define SYM_ALT_C_M   91
-//#define SYM_C_VSPEED  92
+#define SYM_VSPEED_C  92
 
 #define SYMBOL(n) AP_OSD_AbstractScreen::symbols_lookup_table[n]
 
@@ -1931,22 +1931,18 @@ void AP_OSD_Screen::draw_vspeed(uint8_t x, uint8_t y)
         backend->write(x, y, false, fmt, sym, (int)roundf(vs_scaled), u_icon(VSPEED));
     }
 }
-/*
-void AP_OSD_Screen::draw_c_vspeed(uint8_t x, uint8_t y)
+
+void AP_OSD_Screen::draw_vspeed_c(uint8_t x, uint8_t y)
 {
-    AP_AHRS &ahrs = AP::ahrs();
-    uint16_t roll = abs(ahrs.roll_sensor) / 100;
-    char r;
-    if (ahrs.roll_sensor > 50) {
-        r = SYMBOL(SYM_ROLLR);
-    } else if (ahrs.roll_sensor < -50) {
-        r = SYMBOL(SYM_ROLLL);
-    } else {
-        r = SYMBOL(SYM_ROLL0);
-    }
-    backend->write(x, y, false, "%c%3d%c", r, roll, SYMBOL(SYM_DEGR));
+    float vspd_c;
+    char sym;
+    sym = SYMBOL(SYM_DOWN_DOWN);
+
+    vspd_c = 7.3;
+
+    backend->write(x, y, false, "%c%.1f%c", sym, (float)vspd_c, u_icon(VSPEED));
 }
-*/
+
 #if HAL_WITH_ESC_TELEM
 void AP_OSD_Screen::draw_esc_temp(uint8_t x, uint8_t y)
 {
@@ -2274,7 +2270,7 @@ void AP_OSD_Screen::draw_current2(uint8_t x, uint8_t y)
 {
     draw_current(1, x, y);
 }
-
+/*
 #if AP_VIDEOTX_ENABLED
 void AP_OSD_Screen::draw_vtx_power(uint8_t x, uint8_t y)
 {
@@ -2290,7 +2286,7 @@ void AP_OSD_Screen::draw_vtx_power(uint8_t x, uint8_t y)
     backend->write(x, y, !vtx->is_configuration_finished(), "%4hu%c", powr, SYMBOL(SYM_MW));
 }
 #endif  // AP_VIDEOTX_ENABLED
-
+*/
 #if AP_TERRAIN_AVAILABLE
 void AP_OSD_Screen::draw_hgt_abvterr(uint8_t x, uint8_t y)
 {
@@ -2380,7 +2376,7 @@ void AP_OSD_Screen::draw(void)
     DRAW_SETTING(aspd1);
     DRAW_SETTING(aspd2);
     DRAW_SETTING(vspeed);
-    //DRAW_SETTING(c_vspeed);
+    DRAW_SETTING(vspeed_c);
     DRAW_SETTING(throttle);
     DRAW_SETTING(heading);
     DRAW_SETTING(wind);
@@ -2404,7 +2400,7 @@ void AP_OSD_Screen::draw(void)
     DRAW_SETTING(clk);
 #endif
 #if AP_VIDEOTX_ENABLED
-    DRAW_SETTING(vtx_power);
+    //DRAW_SETTING(vtx_power);
 #endif
 
 #if HAL_WITH_ESC_TELEM
