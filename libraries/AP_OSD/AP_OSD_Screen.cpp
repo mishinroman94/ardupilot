@@ -1374,16 +1374,24 @@ void AP_OSD_Screen::draw_altitude(uint8_t x, uint8_t y)
 void AP_OSD_Screen::draw_alt_c(uint8_t x, uint8_t y)
 {
     AP_Winch *winch = AP::winch();
-    
+    AP_Terrain *terrain = AP::terrain();
+
+    float terrain_altitude;
+    float winch_length = winch->get_length();
     float alt;
     float alt_cargo;
-    float winch_length = winch->get_length();
-    AP_AHRS &ahrs = AP::ahrs();
-    WITH_SEMAPHORE(ahrs.get_semaphore());
-    ahrs.get_relative_position_D_home(alt);
 
-    alt_cargo = alt - winch_length;
-    backend->write(x, y, false, "%4d%c", (int)u_scale(ALTITUDE, alt_cargo), u_icon(ALTITUDE));
+    if (terrain != nullptr && terrain->height_above_terrain(terrain_altitude,true)) {
+        alt_cargo = terrain_altitude - winch_length;
+        backend->write(x, y, false, "%4d%c", (int)u_scale(ALTITUDE, alt_cargo), u_icon(ALTITUDE));
+    } else {
+        AP_AHRS &ahrs = AP::ahrs();
+        WITH_SEMAPHORE(ahrs.get_semaphore());
+        ahrs.get_relative_position_D_home(alt);
+
+        alt_cargo = alt - winch_length;
+        backend->write(x, y, true, "%4d%c", (int)u_scale(ALTITUDE, alt_cargo), u_icon(ALTITUDE));
+    }
 }
 
 void AP_OSD_Screen::draw_bat_volt(uint8_t instance, VoltageType type, uint8_t x, uint8_t y)
