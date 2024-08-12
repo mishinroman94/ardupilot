@@ -138,7 +138,8 @@ void AP_Winch_Daiwa::read_data_from_winch()
                 parse_state = ParseState::WAITING_FOR_SPOOL;
                 break;
             case ParseState::WAITING_FOR_SPOOL:
-                intermediate.line_length = (int32_t)value * line_length_correction_factor;
+                //intermediate.line_length = (int32_t)value * line_length_correction_factor;
+                intermediate.line_length = (int32_t)value;
                 parse_state = ParseState::WAITING_FOR_TENSION1;
                 break;
             case ParseState::WAITING_FOR_TENSION1:

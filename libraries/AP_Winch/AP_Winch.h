@@ -56,6 +56,8 @@ public:
     // release specified length of cable (in meters)
     void release_length(float length);
 
+    float get_length();
+
     // deploy line at specified speed in m/s (+ve deploys line, -ve retracts line, 0 stops)
     void set_desired_rate(float rate);
 

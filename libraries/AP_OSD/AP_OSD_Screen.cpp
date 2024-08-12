@@ -26,6 +26,7 @@
 #include "AP_OSD.h"
 #include "AP_OSD_Backend.h"
 
+#include <AP_Winch/AP_Winch.h>
 #include <AP_HAL/AP_HAL.h>
 #include <AP_HAL/Util.h>
 #include <AP_AHRS/AP_AHRS.h>
@@ -1372,14 +1373,17 @@ void AP_OSD_Screen::draw_altitude(uint8_t x, uint8_t y)
 
 void AP_OSD_Screen::draw_alt_c(uint8_t x, uint8_t y)
 {
+
+    AP_Winch *winch = AP::winch();
+    
+
     float alt;
     float alt_cargo;
-    float winch_length;
+    float winch_length = winch->get_length();
     AP_AHRS &ahrs = AP::ahrs();
     WITH_SEMAPHORE(ahrs.get_semaphore());
     ahrs.get_relative_position_D_home(alt);
 
-    winch_length = 17.3;
     alt_cargo = alt - winch_length;
     backend->write(x, y, false, "%4d%c", (int)u_scale(ALTITUDE, alt_cargo), u_icon(ALTITUDE));
 }
