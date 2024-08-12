@@ -120,6 +120,12 @@ float AP_Winch::get_length()
     return backend->get_current_length();
 }
 
+// получение данных о скорости лебедки
+float AP_Winch::get_speed()
+{
+    return backend->get_current_speed();
+}
+
 // deploy line at specified speed in m/s (+ve deploys line, -ve retracts line, 0 stops)
 void AP_Winch::set_desired_rate(float rate)
 {

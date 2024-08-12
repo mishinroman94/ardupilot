@@ -38,6 +38,8 @@ public:
     // returns current length of line deployed
     virtual float get_current_length() const = 0;
 
+    virtual float get_current_speed() const = 0;
+
     // send status to ground station
     virtual void send_status(const GCS_MAVLINK &channel) = 0;
 

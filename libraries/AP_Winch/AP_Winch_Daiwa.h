@@ -49,6 +49,8 @@ public:
     // returns current length of line deployed
     float get_current_length() const override { return latest.line_length; }
 
+    float get_current_speed() const override { return latest.speed_pct; }
+
     // send status to ground station
     void send_status(const GCS_MAVLINK &channel) override;
 
@@ -90,7 +92,7 @@ private:
         bool thread_end;                // true if end of thread has been detected
         uint8_t moving;                 // 0:stopped, 1:retracting line, 2:extending line, 3:clutch engaged, 4:zero reset
         uint8_t clutch;                 // 0:clutch off, 1:clutch engaged weakly, 2:clutch engaged strongly, motor can spin freely
-        uint8_t speed_pct;              // speed motor is moving as a percentage
+        float speed_pct;              // speed motor is moving as a percentage
         float voltage;                  // battery voltage (in voltes)
         float current;                  // current draw (in amps)
         float pcb_temp;                 // PCB temp in C

@@ -58,6 +58,8 @@ public:
 
     float get_length();
 
+    float get_speed();
+
     // deploy line at specified speed in m/s (+ve deploys line, -ve retracts line, 0 stops)
     void set_desired_rate(float rate);
 

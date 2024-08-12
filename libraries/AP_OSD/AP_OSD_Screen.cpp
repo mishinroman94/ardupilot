@@ -1373,10 +1373,8 @@ void AP_OSD_Screen::draw_altitude(uint8_t x, uint8_t y)
 
 void AP_OSD_Screen::draw_alt_c(uint8_t x, uint8_t y)
 {
-
     AP_Winch *winch = AP::winch();
     
-
     float alt;
     float alt_cargo;
     float winch_length = winch->get_length();
@@ -1938,11 +1936,12 @@ void AP_OSD_Screen::draw_vspeed(uint8_t x, uint8_t y)
 
 void AP_OSD_Screen::draw_vspeed_c(uint8_t x, uint8_t y)
 {
+    AP_Winch *winch = AP::winch();
+    
     float vspd_c;
     char sym;
     sym = SYMBOL(SYM_DOWN_DOWN);
-
-    vspd_c = 7.3;
+    vspd_c = winch->get_speed();
 
     backend->write(x, y, false, "%c%.1f%c", sym, (float)vspd_c, u_icon(VSPEED));
 }

@@ -71,14 +71,14 @@ void AP_Winch_Daiwa::send_status(const GCS_MAVLINK &channel)
     }
 
     // convert speed percentage to absolute speed
-    const float speed_ms = fabsf(config.rate_max) * (float)latest.speed_pct * 0.01f;
+    //const float speed_ms = fabsf(config.rate_max) * (float)latest.speed_pct * 0.01f;
 
     // send status
     mavlink_msg_winch_status_send(
         channel.get_chan(),
         AP_HAL::micros64(),
         latest.line_length,
-        speed_ms,
+        latest.speed_pct,
         (float)latest.tension_corrected * 0.01f,
         latest.voltage,
         latest.current,
@@ -139,7 +139,7 @@ void AP_Winch_Daiwa::read_data_from_winch()
                 break;
             case ParseState::WAITING_FOR_SPOOL:
                 //intermediate.line_length = (int32_t)value * line_length_correction_factor;
-                intermediate.line_length = (int32_t)value;
+                intermediate.line_length = (float)value;
                 parse_state = ParseState::WAITING_FOR_TENSION1;
                 break;
             case ParseState::WAITING_FOR_TENSION1:
@@ -163,7 +163,7 @@ void AP_Winch_Daiwa::read_data_from_winch()
                 parse_state = ParseState::WAITING_FOR_SPEED;
                 break;
             case ParseState::WAITING_FOR_SPEED:
-                intermediate.speed_pct = constrain_int32(value, 0, UINT8_MAX);
+                intermediate.speed_pct = (float)value;
                 parse_state = ParseState::WAITING_FOR_VOLTAGE;
                 break;
             case ParseState::WAITING_FOR_VOLTAGE:

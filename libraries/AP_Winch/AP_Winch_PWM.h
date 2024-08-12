@@ -33,6 +33,8 @@ public:
     // returns current length of line deployed
     float get_current_length() const override { return line_length; }
 
+    float get_current_speed() const override { return speed_pct; }
+
     // send status to ground station
     void send_status(const GCS_MAVLINK &channel) override;
 
@@ -48,6 +50,7 @@ private:
 
     uint32_t control_update_ms; // last time control_winch was called
     float line_length;          // estimated length of line in meters
+    float speed_pct;
 };
 
 #endif  // AP_WINCH_PWM_ENABLED
